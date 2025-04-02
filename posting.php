@@ -1,11 +1,50 @@
 <?php
 // Database connection parameters
+
+$_pageName = "posting";
+$_cookieValue = time();
+
+function setPageVisitCookie($pageName) {
+  $cookieName = 'page_visit_' . md5($pageName); // Unique cookie name
+  $startTime = time(); // Current timestamp
+  setcookie($cookieName, $startTime, time() + (86400 * 30), "/"); // Expires in 30 days
+}
+
+function getPageVisitTime($pageName) {
+  $cookieName = 'page_visit_' . md5($pageName);
+
+  if (isset($_COOKIE[$cookieName])) {
+      $startTime = $_COOKIE[$cookieName];
+      $endTime = time();
+      $timeSpent = $endTime - $startTime;
+      return $timeSpent;
+  } else {
+      return null; // Cookie not set
+  }
+}
+
+$currentPage = $_SERVER['REQUEST_URI'];
+
+if (!isset($_COOKIE['page_visit_' . md5($currentPage)])) {
+  setPageVisitCookie($currentPage);
+}
+
+$timeSpent = getPageVisitTime($currentPage);
+
+echo "<script>";
+echo " console.log('". $_pageName ."'); ";
+echo "console.log('" . addslashes($timeSpent) . "');"; // Important: Escape quotes
+echo "console.log('timeSpend');";
+echo "</script>";
+
+//==========================================
 $servername = "127.0.0.1";
 $username = "hour"; // Replace with your database username
 $password = "123"; // Replace with your database password
 $dbname = "community";
 
 // Initialize variable for error message
+
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -29,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
         
         // Redirect to index.html after successful submission
-        header("Location: index.html");
+        header("Location: index.php");
         exit();
         
     } catch (PDOException $e) {
@@ -103,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <div class="form-group">
                 <label for="url">URL:</label>
-                <input type="url" id="url" name="url" required>
+                <input type="url" id="url" name="url">
             </div>
             
             <button type="submit">Submit Post</button>
