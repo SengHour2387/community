@@ -1,13 +1,13 @@
 <?php
-// Database connection parameters
+
 
 $_pageName = "posting";
 $_cookieValue = time();
 
 function setPageVisitCookie($pageName) {
-  $cookieName = 'page_visit_' . md5($pageName); // Unique cookie name
-  $startTime = time(); // Current timestamp
-  setcookie($cookieName, $startTime, time() + (86400 * 30), "/"); // Expires in 30 days
+  $cookieName = 'page_visit_' . md5($pageName); 
+  $startTime = time(); 
+  setcookie($cookieName, $startTime, time() + (86400 * 30), "/"); 
 }
 
 function getPageVisitTime($pageName) {
@@ -19,7 +19,7 @@ function getPageVisitTime($pageName) {
       $timeSpent = $endTime - $startTime;
       return $timeSpent;
   } else {
-      return null; // Cookie not set
+      return null; 
   }
 }
 
@@ -33,32 +33,31 @@ $timeSpent = getPageVisitTime($currentPage);
 
 echo "<script>";
 echo " console.log('". $_pageName ."'); ";
-echo "console.log('" . addslashes($timeSpent) . "');"; // Important: Escape quotes
+echo "console.log('" . addslashes($timeSpent) . "');"; 
 echo "console.log('timeSpend');";
 echo "</script>";
 
 //==========================================
 $servername = "127.0.0.1";
-$username = "hour"; // Replace with your database username
-$password = "123"; // Replace with your database password
+$username = "hour"; 
+$password = "123"; 
 $dbname = "community";
 
-// Initialize variable for error message
 
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        // Create a PDO connection
+       
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        // Get form data
+        
         $title = $_POST['title'];
         $description = $_POST['description'];
         $url = $_POST['url'];
         
-        // Prepare and execute SQL statement
+       
         $sql = "INSERT INTO posts (title, description, url) VALUES (:title, :description, :url)";
         $stmt = $conn->prepare($sql);
         $stmt->execute([
@@ -67,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':url' => $url
         ]);
         
-        // Redirect to index.html after successful submission
         header("Location: index.php");
         exit();
         

@@ -5,9 +5,9 @@ $_pageName = "index";
 $_cookieValue = time();
 
 function setPageVisitCookie($pageName) {
-  $cookieName = 'page_visit_' . md5($pageName); // Unique cookie name
-  $startTime = time(); // Current timestamp
-  setcookie($cookieName, $startTime, time() + (86400 * 30), "/"); // Expires in 30 days
+  $cookieName = 'page_visit_' . md5($pageName); 
+  $startTime = time(); 
+  setcookie($cookieName, $startTime, time() + (86400 * 30), "/");
 }
 
 function getPageVisitTime($pageName) {
@@ -19,7 +19,7 @@ function getPageVisitTime($pageName) {
       $timeSpent = $endTime - $startTime;
       return $timeSpent;
   } else {
-      return null; // Cookie not set
+      return null; 
   }
 }
 
@@ -33,7 +33,8 @@ $timeSpent = getPageVisitTime($currentPage);
 
 echo "<script>";
 echo " console.log('". $_pageName ."'); ";
-echo "console.log('" . addslashes($timeSpent) . "');"; // Important: Escape quotes
+echo "console.log('" . addslashes($timeSpent) . "');";
+echo "console.log('" . md5($_pageName) ."');";
 echo "console.log('timeSpend');";
 echo "</script>";
 ?>  
