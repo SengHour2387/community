@@ -36,11 +36,6 @@ async function getPosts() {
                     // If you want to display in HTML instead of console:
                     const postElement = document.createElement('div');
                     postElement.className = 'post';
-                    const imageElement = document.createElement('img');
-                    imageElement.src = post.url;
-                    imageElement.alt = post.title;
-                    imageElement.className = 'post-image';
-                    postElement.appendChild(imageElement);
                     postElement.innerHTML =
                         `
                         <div>
